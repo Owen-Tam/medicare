@@ -17,8 +17,8 @@ class Medication {
 
 class User {
   final List<Medication> medications;
-
-  User({required this.medications});
+  final int criticalDaysLeft;
+  User({required this.medications, required this.criticalDaysLeft});
 }
 
 class Data extends ChangeNotifier {
@@ -29,24 +29,40 @@ class Data extends ChangeNotifier {
         name: 'Coenzyme Q10 300mg',
         times: [TimeOfDay(hour: 12, minute: 0)],
         quantity: 1, // Assuming 1 tablet
-        stock: 50,
+        stock: 2,
         drawerID: "1"),
     Medication(
         name: 'Magnesium 100mg',
-        times: [TimeOfDay(hour: 12, minute: 0), TimeOfDay(hour: 18, minute: 0)],
+        times: [
+          const TimeOfDay(hour: 12, minute: 0),
+          const TimeOfDay(hour: 18, minute: 0)
+        ],
         quantity: 1,
-        stock: 100,
+        stock: 8,
         drawerID: "2"),
     Medication(
       name: 'Glucosamine 500mg',
-      times: [TimeOfDay(hour: 12, minute: 0), TimeOfDay(hour: 18, minute: 0)],
+      times: [
+        const TimeOfDay(hour: 12, minute: 0),
+        const TimeOfDay(hour: 18, minute: 0)
+      ],
       quantity: 1, // Assuming 1 tablet
-      stock: 75,
+      stock: 10,
       drawerID: "3",
     )
-  ]);
+  ], criticalDaysLeft: 2);
 
   User get user => _user;
+  void addMedication(String medicationName, List<TimeOfDay> times, int quantity,
+      int stock, String drawerID) {
+    _user.medications.add(Medication(
+        name: medicationName,
+        times: times,
+        quantity: quantity,
+        stock: stock,
+        drawerID: drawerID));
+    notifyListeners();
+  }
 
   void changePage(int newPageIndex) {
     _currentPageIndex = newPageIndex;

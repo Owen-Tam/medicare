@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import "../data.dart";
-import "../components/medicineSchedule.dart";
+import "../components/medicine_schedule.dart";
+import "../components/medicine_stock.dart";
+
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +15,28 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    Future<void> _showUnallowDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Action unavailable.'),
+            content: const SingleChildScrollView(
+                child: Text('This feature has not been implemented fully.')),
+            actions: <Widget>[
+              FilledButton.tonal(
+                child: const Text('I understand'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     final data = Provider.of<Data>(context);
     final user = data.user;
 
@@ -46,9 +70,11 @@ class _HomePageState extends State<HomePage> {
 // Now `medicationByTime` contains the desired object
     final now = DateTime.now();
     final nowTimeOfDay = TimeOfDay.fromDateTime(now);
+
     return Stack(
       children: [
         ListView(scrollDirection: Axis.vertical, children: [
+          SizedBox(height: 18),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Padding(
               padding: EdgeInsets.only(top: 15), // Add margin top of 30px
@@ -69,7 +95,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.only(top: 5),
+                padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   "Now: ${_formatTime(DateTime.now())}",
                   style: const TextStyle(
@@ -79,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                 ))
           ]),
           Padding(
-              padding: EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 20),
               child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -95,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
+                              const Padding(
                                   padding: EdgeInsets.only(bottom: 8),
                                   child: Text(
                                     "Today’s medicine",
@@ -125,68 +151,20 @@ class _HomePageState extends State<HomePage> {
                       child: FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: Alignment.topLeft,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Padding(
-                                        padding: EdgeInsets.only(bottom: 8),
-                                        child: Row(children: [
-                                          Text(
-                                            "Medicine Stock: ",
-                                            style: TextStyle(
-                                              fontSize:
-                                                  20, // Set font size to 25
-                                              fontWeight: FontWeight
-                                                  .w600, // Set medium weight
-                                            ),
-                                          ),
-                                          Text(
-                                            "Critical",
-                                            style: TextStyle(
-                                                fontSize:
-                                                    20, // Set font size to 25
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(
-                                                    0xFFFF0000) // Set medium weight
-                                                ),
-                                          )
-                                        ])),
-                                    const Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Coenzyme Q10 300mg - 2 days",
-                                              style: TextStyle(
-                                                  color: Color(0xFFFF0000),
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500)),
-                                          Text("Magnesium 100mg - 8 days",
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500)),
-                                        ]),
-                                  ]),
-                              SizedBox(height: 8),
-                              FilledButton.tonal(
-                                onPressed: () {
-                                  data.changePage(1);
-                                },
-                                child: const Text('See More'),
-                              )
-                            ],
-                          ))))),
-          SizedBox(height: 20),
+                          child: StockWidget(
+                              userMedications: userMedications,
+                              short: true))))),
+          SizedBox(height: 18),
         ]),
         Positioned(
           right: 0,
-          bottom: 0,
+          bottom: 10,
           child: FloatingActionButton.extended(
-            onPressed: () {},
-            icon: Icon(Icons.calendar_month, color: Color(0xFFFFFFFF)),
-            label: Text("Manage Schedule",
+            onPressed: () {
+              _showUnallowDialog();
+            },
+            icon: const Icon(Icons.calendar_month, color: Color(0xFFFFFFFF)),
+            label: const Text("Manage Schedule",
                 style: TextStyle(color: Colors.white, fontSize: 15)),
             backgroundColor: Color(0xFF5D8AFF),
           ),

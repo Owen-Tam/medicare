@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import "data.dart";
 import 'package:provider/provider.dart';
 
-import "pages/homePage.dart";
-import "pages/remindersPage.dart";
-import "pages/profilePage.dart";
-import "pages/chatbotPage.dart";
+import "pages/home_page.dart";
+import "pages/reminders_page.dart";
+import "pages/profile_page.dart";
+import "pages/chatbot_page.dart";
 
 void main() => runApp(const MyApp());
 
@@ -93,8 +93,7 @@ class _MyWidgetState extends State<MyWidget> {
         ],
       ),
       body: Padding(
-          padding:
-              const EdgeInsets.only(top: 15, left: 18, right: 18, bottom: 18),
+          padding: const EdgeInsets.only(left: 18, right: 18),
           child: IndexedStack(
             index: data.currentPageIndex,
             children: pageList,

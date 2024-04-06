@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import "../data.dart";
-import 'package:provider/provider.dart';
 
 List<Widget> generateMedicineSchedule(
     Map<TimeOfDay, List<MedicationDetails>> medicationByTime,
@@ -11,11 +9,7 @@ List<Widget> generateMedicineSchedule(
     final double nowDouble =
         currentTime.hour.toDouble() + (currentTime.minute.toDouble() / 60);
 
-    if (timeDouble > nowDouble) {
-      return true;
-    } else {
-      return false;
-    }
+    return nowDouble > timeDouble;
   }
 
   List<Widget> generateMedicineRow(List<MedicationDetails> medications) {
@@ -100,7 +94,7 @@ class MedicationDetails {
   });
 }
 
-class MedicineWidget extends StatelessWidget {
+class MedicineWidget extends StatefulWidget {
   final Map<TimeOfDay, List<MedicationDetails>>
       medicationByTime; // Replace with your actual data
   final TimeOfDay now;
@@ -108,10 +102,15 @@ class MedicineWidget extends StatelessWidget {
   MedicineWidget({required this.medicationByTime, required this.now});
 
   @override
+  State<MedicineWidget> createState() => _MedicineWidgetState();
+}
+
+class _MedicineWidgetState extends State<MedicineWidget> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: generateMedicineSchedule(medicationByTime, now),
+      children: generateMedicineSchedule(widget.medicationByTime, widget.now),
     );
   }
 }

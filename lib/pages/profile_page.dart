@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import "../data.dart";
-import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,7 +10,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
