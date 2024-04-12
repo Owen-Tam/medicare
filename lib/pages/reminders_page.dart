@@ -150,9 +150,9 @@ class _RemindersPageState extends State<RemindersPage> {
             Padding(
                 padding: EdgeInsets.only(top: 15),
                 child: SvgPicture.asset(chartDir, semanticsLabel: 'chart')),
-            SizedBox(height: 18),
+            SizedBox(height: 80),
           ],
-        )
+        ),
       ]),
       Positioned(
         right: 0,

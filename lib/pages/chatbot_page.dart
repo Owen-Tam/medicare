@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
+
 import "../data.dart";
 
 class Message {
@@ -60,7 +62,7 @@ Widget formatHashtags(String text) {
 
       if (index == letters.length - 1) {
         finalStr.add(TextSpan(
-            text: '$letter',
+            text: '$regular',
             style: TextStyle(
               fontSize: 16,
               color: Colors.black,
@@ -98,7 +100,6 @@ class _ChatbotPageState extends State<ChatbotPage> {
         addMessage(
             "Oh, I'm sorry to hear that you're feeling unwell today, Amy. However, you should not take more than the prescribed dosage of any medication without consulting with your healthcare provider first. Your recommended dosage is one 100mg pill at 12:00pm and another at 6:00pm. If you feel unwell, please tell your son at #852+ 1234 5678#.",
             true);
-
         break;
       case "Do I need to buy any medicine?":
         addMessage(
@@ -126,9 +127,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
     "Which drawer is my Glucosamine medication in",
     "What is life?"
   ];
+
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<Data>(context);
+    final ScrollController _controller = ScrollController();
 
     Future<void> _showUnallowDialog() async {
       return showDialog<void>(
@@ -156,6 +159,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
     return Stack(children: [
       messages.length > 0
           ? ListView.builder(
+              controller: _controller,
               itemCount: messages.length,
               itemBuilder: (BuildContext context, int index) {
                 if (messages[index].isBot == true) {
@@ -299,6 +303,14 @@ class _ChatbotPageState extends State<ChatbotPage> {
             setState(() {
               testMsgIndex++;
             });
+
+            if (_controller.hasClients) {
+              _controller.animateTo(
+                _controller.position.maxScrollExtent * 1.1,
+                duration: Duration(milliseconds: 800),
+                curve: Curves.fastOutSlowIn,
+              );
+            }
           },
           icon: const Icon(Icons.question_mark, color: Color(0xFFFFFFFF)),
           label: const Text("Ask Question",
@@ -310,12 +322,6 @@ class _ChatbotPageState extends State<ChatbotPage> {
   }
 }
 
-// TODO
-// 1. Create add medicine button DONE
-// 2 Make popups for under construction buttons DONE
-// 2.5. Create more medicine DONE
-// 3. Create more question answer
-// 4. Export
 String _formatTime(DateTime time) {
   final hour = time.hour % 12; // Convert to 12-hour system
   final minute =

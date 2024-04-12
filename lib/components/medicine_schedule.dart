@@ -108,9 +108,18 @@ class MedicineWidget extends StatefulWidget {
 class _MedicineWidgetState extends State<MedicineWidget> {
   @override
   Widget build(BuildContext context) {
+    final sortedMedicationByTime =
+        Map.fromEntries(widget.medicationByTime.entries.toList()
+          ..sort((a, b) {
+            final timeA = a.key;
+            final timeB = b.key;
+            return timeA.hour * 60 +
+                timeA.minute -
+                (timeB.hour * 60 + timeB.minute);
+          }));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: generateMedicineSchedule(widget.medicationByTime, widget.now),
+      children: generateMedicineSchedule(sortedMedicationByTime, widget.now),
     );
   }
 }
