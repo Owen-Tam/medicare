@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           theme: CustomTheme.lightThemeData(context),
           darkTheme: CustomTheme.darkThemeData(),
+          debugShowCheckedModeBanner: false,
           home: const MyWidget()),
     );
   }
@@ -62,7 +63,19 @@ class _MyWidgetState extends State<MyWidget> {
             style: TextStyle(fontWeight: FontWeight.bold), // Bold the text
           ),
           titleSpacing: 18,
-          centerTitle: false),
+          centerTitle: false,
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.translate_outlined,
+              ),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Translating...')));
+              },
+            ),
+          ]),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {

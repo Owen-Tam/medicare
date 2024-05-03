@@ -312,7 +312,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
               );
             }
           },
-          icon: const Icon(Icons.question_mark, color: Color(0xFFFFFFFF)),
+          icon: const Icon(Icons.mic_outlined, color: Color(0xFFFFFFFF)),
           label: const Text("Ask Question",
               style: TextStyle(color: Colors.white, fontSize: 15)),
           backgroundColor: Color(0xFF5D8AFF),

@@ -137,23 +137,6 @@ class _HomePageState extends State<HomePage> {
                                   now: nowTimeOfDay)
                             ],
                           ))))),
-          Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color:
-                        Color(0xFFEBEDF3), // Set your desired background color
-                    borderRadius: BorderRadius.circular(20), // Rounded corners
-                  ),
-                  child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.topLeft,
-                          child: StockWidget(
-                              userMedications: userMedications,
-                              short: true))))),
           SizedBox(height: 18),
         ]),
         Positioned(
